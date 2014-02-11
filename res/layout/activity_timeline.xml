@@ -4,15 +4,24 @@
     android:layout_height="match_parent"
     tools:context=".TimelineActivity" >
 
-    <ListView
-        android:id="@+id/lvTweets"
-        android:layout_width="match_parent"
+    <!-- fragment
+        android:id="@+id/fragmentTimeLine"
+        android:name="com.codepath.twitter.twitterapp.fragments.MentionsFragment"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true" >
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        tools:layout="@layout/fragment_timeline" />  -->
 
-    </ListView>
-    
-     
-    
- 
+    <FrameLayout
+        android:id="@+id/frame_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" >
+
+    </FrameLayout>
+
 </RelativeLayout>

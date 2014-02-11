@@ -40,10 +40,21 @@ public class TwitterClient extends OAuthBaseClient {
     	params.put("include_rts", "false");
     	if(!max_id.equals("0")){
     	 params.put("max_id",max_id);
-    	 System.out.println("MAX ID ::::: " + max_id);
     	}
     	client.get(url,params,handler);
     }
+    
+    public void getMentionsTimeline(String max_id, String offset,AsyncHttpResponseHandler handler){
+    	String url = getApiUrl("statuses/mentions_timeline.json");
+    	RequestParams params = new RequestParams("count", offset);
+    	params.put("include_rts", "false");
+    	if(!max_id.equals("0")){
+    	 params.put("max_id",max_id);
+    	}
+    	client.get(url,params,handler);
+    }
+    
+    
     
     public void postTweet(AsyncHttpResponseHandler handler, String data){
     	String url = getApiUrl("statuses/update.json");
@@ -52,6 +63,22 @@ public class TwitterClient extends OAuthBaseClient {
     	client.post(url, reqParam, handler);
     }
     
+    
+    public void getUserInfo(AsyncHttpResponseHandler handler){
+    	String url = getApiUrl("account/verify_credentials.json");
+    	client.get(url, null, handler);
+    }
+    
+    public void getUserTimeline(String user, AsyncHttpResponseHandler handler){
+    	String url = getApiUrl("statuses/user_timeline.json");
+    	if(null != user){
+    		RequestParams param = new RequestParams("screen_name", user);
+    		client.get(url, param,handler);
+    	}else {
+    		client.get(url, null, handler);
+    	}
+    }
+     
     // CHANGE THIS
     // DEFINE METHODS for different API endpoints here
     public void getInterestingnessList(AsyncHttpResponseHandler handler) {
