@@ -68,5 +68,6 @@ public class SherlockTabListener<T extends SherlockFragment> implements
 
 	public void onTabReselected(Tab tab, FragmentTransaction ft) {
 		// User selected the already selected tab. Usually do nothing.
+		
 	}
 }

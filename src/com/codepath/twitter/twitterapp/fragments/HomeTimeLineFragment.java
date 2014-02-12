@@ -23,6 +23,12 @@ public class HomeTimeLineFragment extends TimelineTweetFragment {
 	User u;
 	
 	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		view.invalidate();
+		super.onViewCreated(view, savedInstanceState);
+	}
+	
+	@Override
 	public void onAttach(Activity activity) {
 		// TODO Auto-generated method stub
 		super.onAttach(activity);

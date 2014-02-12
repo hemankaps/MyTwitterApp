@@ -1,16 +1,11 @@
 package com.codepath.twitter.twitterapp;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import org.json.JSONArray;
 
 import android.content.Intent;
-import android.database.SQLException;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -19,13 +14,10 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.activeandroid.ActiveAndroid;
 import com.codepath.twitter.twitterapp.fragments.HomeTimeLineFragment;
 import com.codepath.twitter.twitterapp.fragments.MentionsFragment;
 import com.codepath.twitter.twitterapp.fragments.TimelineTweetFragment;
 import com.codepath.twitter.twitterapp.json.models.Tweet;
-import com.codepath.twitter.twitterapp.json.models.User;
-import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class TimelineActivity extends SherlockFragmentActivity  {
 	

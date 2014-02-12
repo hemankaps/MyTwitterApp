@@ -23,51 +23,41 @@ public class ProfileViewActivity extends SherlockFragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		 //requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS); 
-		//setContentView(R.layout.activity_profile_view);
+		setContentView(R.layout.activity_profile_view);
 		
 		Intent i = getIntent();
 		User user = (User) i.getSerializableExtra("screen_name");
-		/*if(user != null){
-			getActionBar().setTitle("@" + user.getScreenName());
+		if(user != null){
+			getSupportActionBar().setTitle("@" + user.getScreenName());
 			populateHeader(user);
 			
 		} else {
 			fetchUserProfile();
-		}*/
+		}
 		
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-		ft.add(R.id.fragmentUserTimeline, new UserTimeLineFragment());
+		ft.replace(R.id.frame_profile_container, new UserTimeLineFragment());
 		ft.commit();
 	}
 
-	 // Should be called manually when an async task has started
-    public void showProgressBar() {
-        setProgressBarIndeterminateVisibility(true); 
-    }
-
-    // Should be called when an async task has finished
-    public void hideProgressBar() {
-        setProgressBarIndeterminateVisibility(false); 
-    }
+	
     
 	private void fetchUserProfile() {
-		//showProgressBar();
 		MyTwitterApp.getRestClient().getUserInfo(new JsonHttpResponseHandler(){
 				
 				@Override
 				public void onSuccess(JSONObject jsonObj) {
 					User u = User.fromJson(jsonObj);
-					getActionBar().setTitle("@" + u.getScreenName());
-			//		populateHeader(u);
+					getSupportActionBar().setTitle("@" + u.getScreenName());
+					populateHeader(u);
 				}
 			});
-		//hideProgressBar();
 	}
 	
 	
 
 	protected void populateHeader(User u) {
-	/*	TextView tvName = (TextView) findViewById(R.id.tvName);
+		TextView tvName = (TextView) findViewById(R.id.tvName);
 		TextView tvTagLine = (TextView) findViewById(R.id.tvTagLine);
 		TextView tvFollowers = (TextView) findViewById(R.id.tvFollower);
 		TextView tvFollowing = (TextView) findViewById(R.id.tvFollowing);
@@ -80,7 +70,7 @@ public class ProfileViewActivity extends SherlockFragmentActivity {
 		tvTagLine.setText(u.getTagLine());
 		
 		//load Profile Image
-		ImageLoader.getInstance().displayImage(u.getProfileImageUrl(), ivProfileImg);*/
+		ImageLoader.getInstance().displayImage(u.getProfileImageUrl(), ivProfileImg);
 		
 		
 	}
@@ -89,7 +79,7 @@ public class ProfileViewActivity extends SherlockFragmentActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getSupportMenuInflater().inflate(R.menu.profile_view, menu);
-		return onCreateOptionsMenu(menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 
 }
