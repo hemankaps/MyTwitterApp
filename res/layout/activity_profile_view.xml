@@ -8,7 +8,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".ProfileViewActivity" >
     
-      <RelativeLayout
+     <!--   <RelativeLayout
 	        android:id="@+id/usrHeader"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
@@ -61,14 +61,24 @@
             android:layout_marginLeft="20dp"
             />
         
-    </LinearLayout>
+    </LinearLayout> -->
 
     <fragment
         android:id="@+id/fragmentUserTimeline"
         android:name="com.codepath.twitter.twitterapp.fragments.UserTimeLineFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/llHeader"
-        tools:layout="@layout/fragment_timeline" />
+        tools:layout="@layout/fragment_timeline" /> 
+    
+   <!--  <FrameLayout
+        android:id="@+id/frame_profile_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" >
+
+    </FrameLayout>  -->
   
 </RelativeLayout>

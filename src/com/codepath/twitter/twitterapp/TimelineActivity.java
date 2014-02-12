@@ -1,6 +1,7 @@
 package com.codepath.twitter.twitterapp;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -23,6 +24,7 @@ import com.codepath.twitter.twitterapp.fragments.HomeTimeLineFragment;
 import com.codepath.twitter.twitterapp.fragments.MentionsFragment;
 import com.codepath.twitter.twitterapp.fragments.TimelineTweetFragment;
 import com.codepath.twitter.twitterapp.json.models.Tweet;
+import com.codepath.twitter.twitterapp.json.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class TimelineActivity extends SherlockFragmentActivity  {
@@ -37,6 +39,10 @@ public class TimelineActivity extends SherlockFragmentActivity  {
 	public long max_id=0;
 	TimelineTweetFragment fragmentTimeline;
 	public String currentUser;
+	Tab tabMentions;
+	Tab tabHome;
+	public String newTweet;
+	com.actionbarsherlock.app.ActionBar actionBar;
 	//Tab tabHome;
 	
 	@Override
@@ -45,11 +51,6 @@ public class TimelineActivity extends SherlockFragmentActivity  {
 		setContentView(R.layout.activity_timeline);
 		setupTabs();
 		//setupNavigationTabs();
-		//fragmentTimeline = (TimelineTweetFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentTimeLine);
-		
-		//fetchTweets(totalItems);
-		//setListView();
-		
 		
 	/**lvTweets.setOnScrollListener(new EndlessScrollListener(visibleThreshold) {
 			
@@ -64,11 +65,11 @@ public class TimelineActivity extends SherlockFragmentActivity  {
 	}
 	
 	private void setupTabs() {
-		com.actionbarsherlock.app.ActionBar actionBar = getSupportActionBar();
+		actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		actionBar.setDisplayShowTitleEnabled(true);
-
-		Tab tab1 = actionBar
+		
+		tabHome = actionBar
 		    .newTab()
 		    .setText("Home")
 		    .setIcon(R.drawable.ic_home_new)
@@ -76,17 +77,17 @@ public class TimelineActivity extends SherlockFragmentActivity  {
 		    .setTabListener(new SherlockTabListener<HomeTimeLineFragment>(R.id.frame_container, this,
                         "Home", HomeTimeLineFragment.class));
 
-		actionBar.addTab(tab1);
-		actionBar.selectTab(tab1);
+		actionBar.addTab(tabHome);
+		actionBar.selectTab(tabHome);
 
-		Tab tab2 = actionBar
+		tabMentions = actionBar
 		    .newTab()
 		    .setText("Mentions")
 		    .setIcon(R.drawable.ic_mentions)
 		    .setTag("MentionsTimelineFragment")
 		    .setTabListener(new SherlockTabListener<MentionsFragment>(R.id.frame_container, this,
                         "Mentions", MentionsFragment.class));
-		actionBar.addTab(tab2);
+		actionBar.addTab(tabMentions);
 		
 	}
 
@@ -109,69 +110,7 @@ public class TimelineActivity extends SherlockFragmentActivity  {
 		
 	}*/
 
-	private void fetchTweets(int offset){
-		
-		try{
-			List<com.codepath.twitter.twitterapp.json.models.Tweet> ts = readFromDatabase();
-			if(ts != null && ts.size() > 0){
-				for(com.codepath.twitter.twitterapp.json.models.Tweet t: ts){
-					System.out.println("Getting from DB :::::::: " + t.getBody());
-				}
-			}
-		} catch(Exception ex){
-			System.out.println("No SQLite DB found");		
-		}
-		
-		MyTwitterApp.getRestClient().getHomeTimeline(String.valueOf(max_id), String.valueOf(offset), new JsonHttpResponseHandler(){
-			@Override
-			public void onSuccess(JSONArray jsonTwittArray) {
-				//testNewModel(jsonTwittArray);
-				tweets = Tweet.fromJson(jsonTwittArray);
-				fragmentTimeline.getAdapter().addAll(tweets);
-				//tweetAdapter.notifyDataSetChanged();
-				//if(tweets != null && tweets.size() > 0){
-				//	max_id = tweets.get(tweets.size() -1).getId() - 1;
-				//}
-				//int i = tweets.size();
-				///if(i != 0){
-					//Tweet tweet = tweets.get(i-1);
-					//max_id = String.valueOf(tweet.getId());
-				//}
-				
-			}
-
-			private void testNewModel(JSONArray jsonTwittArray) {
-				ArrayList<com.codepath.twitter.twitterapp.json.models.Tweet> tws = new ArrayList<com.codepath.twitter.twitterapp.json.models.Tweet>();
-				tws = com.codepath.twitter.twitterapp.json.models.Tweet.fromJson(jsonTwittArray);
-				if(tws != null && tws.size() > 0){
-					ActiveAndroid.beginTransaction();
-					try{
-						for(com.codepath.twitter.twitterapp.json.models.Tweet tw: tws){
-							System.out.println("Remote Id = " + tw.getRemoteId() + "::: TEXT ::: " + tw.getBody());
-							System.out.println("User INFO NAME :::::::: " + tw.getUser().getName() + ":::::::::: Screen_Name ::::: " + tw.getUser().getScreenName() + "::::: UserId :::: " + tw.getUser().getUserId());
-							System.out.println("Now Saving to DB");
-								
-							tw.getUser().save();
-							System.out.println("User Saved");
-							tw.save();
-							System.out.println("Tweet Saved");
-							
-						}
-						ActiveAndroid.setTransactionSuccessful();
-					} catch(SQLException sqe){
-						System.out.println("Exception to be ignored :::");
-					}
-					catch(Exception e){
-						
-					}
-					finally{
-						ActiveAndroid.endTransaction();
-					}
-				}
-			}
-		});
-
-	}
+	
 	
 	private List<com.codepath.twitter.twitterapp.json.models.Tweet> readFromDatabase() {
 		// TODO Auto-generated method stub
@@ -184,27 +123,7 @@ public class TimelineActivity extends SherlockFragmentActivity  {
 		return com.codepath.twitter.twitterapp.json.models.Tweet.getAll(us.get(0));
 	}
 
-	public void setListView(){
-		tweets = new ArrayList<Tweet>();
-		tweetAdapter = new TweetAdapter(getBaseContext(),tweets);
-		lvTweets = (ListView) findViewById(R.id.lvTweets);
-		
-		Button btnLoadMore = new Button(this);
-		btnLoadMore.setText("Load More");
-		btnLoadMore.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-			   fetchTweets(totalItems);	
-			}
-		});
-		
-		// Adding button to listview at footer
-		lvTweets.addFooterView(btnLoadMore);
-		
-		lvTweets.setAdapter(tweetAdapter);
-	}
+	
 	
 	
 	
@@ -237,11 +156,18 @@ public class TimelineActivity extends SherlockFragmentActivity  {
 		startActivityForResult(it, REQUEST_CODE);
 	}
 	
+	 public String getNewTweet(){
+		 return newTweet;
+	 }
+	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(requestCode == REQUEST_CODE){
 			if(resultCode == RESULT_OK){
+
+				this.setIntent(data);
 				/*Tweet tw = new Tweet();
+				tw.user = new User();
 				String newTweet = data.getStringExtra(TWEETS);
 				if(tweets != null && tweets.size() > 0){
 					tw.user = tweets.get(0).getUser();
@@ -250,9 +176,7 @@ public class TimelineActivity extends SherlockFragmentActivity  {
 				tw.created_at = new Date().toString();
 				tw.body = newTweet;
 				tw.getUser().name = "Himanshu Kapse";
-				tw.getUser().screen_name = "hemankaps";
-				tweetAdapter.add(tw);
-				tweetAdapter.notifyDataSetChanged();*/
+				tw.getUser().screen_name = "hemankaps";*/
 				
 			} else if(resultCode == RESULT_CANCELED){
 				//do nothing

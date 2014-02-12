@@ -7,6 +7,7 @@ import org.scribe.builder.api.TwitterApi;
 import android.content.Context;
 
 import com.codepath.oauth.OAuthBaseClient;
+import com.codepath.twitter.twitterapp.json.models.User;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -69,10 +70,10 @@ public class TwitterClient extends OAuthBaseClient {
     	client.get(url, null, handler);
     }
     
-    public void getUserTimeline(String user, AsyncHttpResponseHandler handler){
+    public void getUserTimeline(User user, AsyncHttpResponseHandler handler){
     	String url = getApiUrl("statuses/user_timeline.json");
     	if(null != user){
-    		RequestParams param = new RequestParams("screen_name", user);
+    		RequestParams param = new RequestParams("screen_name", user.getScreenName());
     		client.get(url, param,handler);
     	}else {
     		client.get(url, null, handler);

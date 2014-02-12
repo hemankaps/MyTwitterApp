@@ -1,18 +1,15 @@
 package com.codepath.twitter.twitterapp;
 
-import java.util.Date;
-
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 
-import com.codepath.twitter.twitterapp.models.Tweet;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
-public class TwitterComposeActivity extends Activity {
+public class TwitterComposeActivity extends SherlockFragmentActivity {
 	public TextView etTweet;
 	public String newTweet;
 	
@@ -27,8 +24,8 @@ public class TwitterComposeActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.twitter_compose, menu);
-		return true;
+		getSupportMenuInflater().inflate(R.menu.twitter_compose, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 	
 	public void cancelAction(View v){

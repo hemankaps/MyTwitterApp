@@ -33,10 +33,7 @@ public abstract class TimelineTweetFragment extends SherlockFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
-		//testNewModel(jsonTwittArray);
-		//fetchTweets(totalItems);
 		setListView();
-	
 	}
 	
 	private List<Tweet> readFromDatabase() {
@@ -52,72 +49,10 @@ public abstract class TimelineTweetFragment extends SherlockFragment {
 
 	
 	
-  public abstract void fetchTweets(int offset);//{
-		
-		/*try{
-			List<com.codepath.twitter.twitterapp.json.models.Tweet> ts = readFromDatabase();
-			if(ts != null && ts.size() > 0){
-				for(com.codepath.twitter.twitterapp.json.models.Tweet t: ts){
-					System.out.println("Getting from DB :::::::: " + t.getBody());
-				}
-			}
-		} catch(Exception ex){
-			System.out.println("No SQLite DB found");		
-		}*/
-		
-		/*MyTwitterApp.getRestClient().getHomeTimeline(String.valueOf(max_id), String.valueOf(offset), new JsonHttpResponseHandler(){
-			@Override
-			public void onSuccess(JSONArray jsonTwittArray) {
-				testNewModel(jsonTwittArray);
-				tweets = Tweet.fromJson(jsonTwittArray);
-				tweetAdapter.addAll(tweets);
-				tweetAdapter.notifyDataSetChanged();
-				if(tweets != null && tweets.size() > 0){
-					max_id = tweets.get(tweets.size() - 1).getTId() - 1;
-				}*/
-				//int i = tweets.size();
-				///if(i != 0){
-					//Tweet tweet = tweets.get(i-1);
-					//max_id = String.valueOf(tweet.getId());
-				//}
-				
-			//} to be opened
-
-			/*private void testNewModel(JSONArray jsonTwittArray) {
-				ArrayList<com.codepath.twitter.twitterapp.json.models.Tweet> tws = new ArrayList<com.codepath.twitter.twitterapp.json.models.Tweet>();
-				tws = com.codepath.twitter.twitterapp.json.models.Tweet.fromJson(jsonTwittArray);
-				if(tws != null && tws.size() > 0){
-					ActiveAndroid.beginTransaction();
-					try{
-						for(com.codepath.twitter.twitterapp.json.models.Tweet tw: tws){
-							System.out.println("Remote Id = " + tw.getRemoteId() + "::: TEXT ::: " + tw.getBody());
-							System.out.println("User INFO NAME :::::::: " + tw.getUser().getName() + ":::::::::: Screen_Name ::::: " + tw.getUser().getScreenName() + "::::: UserId :::: " + tw.getUser().getUserId());
-							System.out.println("Now Saving to DB");
-								
-							tw.getUser().save();
-							System.out.println("User Saved");
-							tw.save();
-							System.out.println("Tweet Saved");
-							
-						}
-						ActiveAndroid.setTransactionSuccessful();
-					} catch(SQLException sqe){
-						System.out.println("Exception to be ignored :::");
-					}
-					catch(Exception e){
-						
-					}
-					finally{
-						ActiveAndroid.endTransaction();
-					}
-				}
-			}
-		});*/
-
-	//}
+  public abstract void fetchTweets(int offset);
 
 
-public void setListView(){
+ public void setListView(){
 	tweets = new ArrayList<Tweet>();
 	tweetAdapter = new TweetAdapter(getActivity(),tweets);
 	lvTweets = (ListView) getActivity().findViewById(R.id.lvTweets);
@@ -129,7 +64,6 @@ public void setListView(){
 		@Override
 		public void onClick(View v) {
 			fetchTweets(totalItems);
-			
 		}
 	});
 	
@@ -137,7 +71,7 @@ public void setListView(){
 	lvTweets.addFooterView(btnLoadMore);
 	
 	lvTweets.setAdapter(tweetAdapter);
-}
+ }
 	public TweetAdapter getAdapter(){
 		return tweetAdapter;
 	}

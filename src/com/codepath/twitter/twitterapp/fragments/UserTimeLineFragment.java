@@ -31,7 +31,7 @@ public class UserTimeLineFragment extends TimelineTweetFragment {
 
 	@Override
 	public void fetchTweets(int offset) {
-		MyTwitterApp.getRestClient().getUserTimeline(user.getScreenName(), new JsonHttpResponseHandler(){
+		MyTwitterApp.getRestClient().getUserTimeline(user, new JsonHttpResponseHandler(){
 			@Override
 			public void onSuccess(JSONArray jsonTwittArray) {
 				tweets = Tweet.fromJson(jsonTwittArray);
