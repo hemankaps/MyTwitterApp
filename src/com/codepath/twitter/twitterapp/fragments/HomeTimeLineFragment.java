@@ -57,13 +57,14 @@ public class HomeTimeLineFragment extends TimelineTweetFragment {
 		}
 	 @Override
 	public void onStart() {
-		 
-		 
+		 if(u == null){
+			 fetchUserProfile();
+		 }
 		 Intent i = getActivity().getIntent();
 		 if (i != null){
 			String newTweet = getActivity().getIntent().getStringExtra(TimelineActivity.TWEETS);
 			 if(null != newTweet){
-				 fetchUserProfile();
+				 
 				 Tweet tw = new Tweet();
 				 if(null != u){
 					 tw.user = u;
